@@ -1,41 +1,105 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-  }
-  
-  .navbar {
+}
+
+.home-container {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    background-color: #333;
-    color: white;
-    padding: 0.5rem 1rem;
-  }
-  
-  .navbar .title {
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .navbar .tabs {
-    list-style: none;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background color */
+}
+
+.big-box {
+    width: 80%; /* Covers a large portion of the webpage */
+    height: 300px; /* Adjust height as needed */
+    background-color: #333; /* Dark background for the box */
+    color: white; /* Text color */
+    border-radius: 8px; /* Rounded corners */
     display: flex;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navbar .tabs li {
-    margin-left: 20px;
-  }
-  
-  .navbar .tabs a {
-    color: white;
-    text-decoration: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow */
+}
+
+.url-input {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.url-input label {
     font-size: 16px;
-  }
-  
-  .navbar .tabs a:hover {
-    text-decoration: underline;
-    color: #ddd;
-  }
-  
+    margin-right: 10px;
+}
+
+.url-input input {
+    padding: 10px;
+    width: 300px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.url-input input:focus {
+    outline: none;
+    border-color: #555;
+}
+
+.go-button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.go-button:hover {
+    background-color: #0056b3;
+}
+
+/* --------------------------- */
+/* THIS IS FOR MENU NAVIGATION */
+/* --------------------------- */
+
+.navbar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background-color: #333;
+color: white;
+padding: 0.5rem 1rem;
+}
+
+.navbar .title {
+font-size: 18px;
+font-weight: bold;
+}
+
+.navbar .tabs {
+list-style: none;
+display: flex;
+margin: 0;
+padding: 0;
+}
+
+.navbar .tabs li {
+margin-left: 20px;
+}
+
+.navbar .tabs a {
+color: white;
+text-decoration: none;
+font-size: 16px;
+}
+
+.navbar .tabs a:hover {
+text-decoration: underline;
+color: #ddd;
+}
