@@ -11,11 +11,34 @@ app.set('views', './views');
 
 app.use(express.static('public'));
 
+//-----------------
+// HOME PAGE
+//-----------------
 app.get('/', (req, res) => {
     const model={
         style: "mystyle.css"
     }
     res.render('home.handlebars', model)
+});
+
+//--------------------
+// ACCESSIBILITY PAGE
+//--------------------
+app.get('/accessibility', (req, res) => {
+    const model={
+        style: "accessibility.css"
+    }
+    res.render('accessibility.handlebars', model)
+});
+
+//--------------------
+// LOGIN PAGE
+//--------------------
+app.get('/login', (req, res) => {
+    const model={
+        style: "login.css"
+    }
+    res.render('login.handlebars', model)
 });
 
 app.listen(PORT, () => {
