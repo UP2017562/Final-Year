@@ -3,10 +3,15 @@
         <h1>Welcome to Dynamic Accessibility</h1>
         <p>This box covers the webpage and can be customized!</p>
     </div>
-    <div class="url-input">
+    <form action="/go" method="POST" class="url-input">
         <label for="url">Insert your URL here:</label>
         <input type="text" id="url" name="url" placeholder="Enter URL...">
-        <button class="go-button">Go!</button>
+        <button type="submit" class="go-button">Go!</button>
+    </form>
+    {{#if showFakePage}}
+    <div class="iframe-container">
+        <iframe src="/fake-page" width="100%" height="100%" style="border: none; border-radius: 8px;"></iframe>
     </div>
+    {{/if}}
 </section>
 

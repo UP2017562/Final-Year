@@ -22,6 +22,23 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow */
+}
+
+.iframe-container {
+    width: 80%; /* Covers a large portion of the webpage */
+    height: 300px; /* Adjust height as needed */
+    background-color: #ccc; /* Dark background for the box */
+    color: white; /* Text color */
+    border-radius: 8px; /* Rounded corners */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 20px auto;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow */
 }
@@ -103,3 +120,4 @@ font-size: 16px;
 text-decoration: underline;
 color: #ddd;
 }
+

@@ -10,6 +10,8 @@ app.set('view engine', 'handlebars');
 app.set('views', './views');
 
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.json());
 
 //-----------------
 // HOME PAGE
@@ -19,6 +21,23 @@ app.get('/', (req, res) => {
         style: "mystyle.css"
     }
     res.render('home.handlebars', model)
+});
+
+// Fake page route
+app.get('/fake-page', (req, res) => {
+    const model = {
+        style: "fakepage.css",
+    };
+    res.render('fake.handlebars', model);
+});
+
+// Process URL and render fake page
+app.post('/go', (req, res) => {
+    const model = {
+        style: "mystyle.css",
+        showFakePage: true, // Indicate that the fake page should load
+    };
+    res.render('home.handlebars', model);
 });
 
 //--------------------
