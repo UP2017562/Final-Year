@@ -1,3 +1,53 @@
-<div class="main">
-    <h1>Accessibility Page</h1>
-</div>
+<section class="accessibility-container">
+    <h1>Accessibility Settings</h1>
+    <form action="/save-accessibility" method="POST" class="accessibility-form">
+        <!-- High Contrast Mode -->
+        <div class="form-group">
+            <label for="high-contrast">
+                <input type="checkbox" id="high-contrast" name="highContrast">
+                Enable High Contrast Mode
+            </label>
+        </div>
+
+        <!-- Font Size Options -->
+        <div class="form-group">
+            <label for="font-size">Choose Font Size:</label>
+            <select id="font-size" name="fontSize">
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+                <option value="x-large">Extra Large</option>
+            </select>
+        </div>
+
+        <!-- Color Options -->
+        <div class="form-group">
+            <label for="color-theme">Preferred Color Theme:</label>
+            <select id="color-theme" name="colorTheme">
+                <option value="default" selected>Default</option>
+                <option value="dark">Dark Mode</option>
+                <option value="light">Light Mode</option>
+                <option value="sepia">Sepia</option>
+            </select>
+        </div>
+
+        <!-- Text Spacing -->
+        <div class="form-group">
+            <label for="text-spacing">
+                <input type="checkbox" id="text-spacing" name="textSpacing">
+                Enable Increased Text Spacing
+            </label>
+        </div>
+
+        <!-- Keyboard Navigation -->
+        <div class="form-group">
+            <label for="keyboard-navigation">
+                <input type="checkbox" id="keyboard-navigation" name="keyboardNavigation">
+                Enable Keyboard Navigation
+            </label>
+        </div>
+
+        <!-- Save Button -->
+        <button type="submit" class="save-button">Save Settings</button>
+    </form>
+</section>

@@ -50,6 +50,17 @@ app.get('/accessibility', (req, res) => {
     res.render('accessibility.handlebars', model)
 });
 
+app.post('/save-accessibility', (req, res) => {
+    const { highContrast, fontSize, colorTheme, textSpacing, keyboardNavigation } = req.body;
+
+    // Process the settings (e.g., save to database or apply on page reload)
+    console.log('Accessibility Settings:', { highContrast, fontSize, colorTheme, textSpacing, keyboardNavigation });
+
+    // Redirect or render confirmation
+    res.redirect('/accessibility');
+});
+
+
 //--------------------
 // LOGIN PAGE
 //--------------------
