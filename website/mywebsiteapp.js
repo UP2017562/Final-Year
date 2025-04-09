@@ -133,10 +133,33 @@ app.post('/save-accessibility', (req, res) => {
 //--------------------
 app.get('/login', (req, res) => {
     const model={
-        style: "login.css"
+        style: "login.css",
+        isLoggedIn: req.session.isLoggedIn
     }
     res.render('login.handlebars', model)
 });
+
+app.post('/login', (req, res) => {
+    const un = req.body.un;
+    const pw = req.body.pw;
+
+    db.get("SELECT * FROM users WHERE username = ? AND password = ?", [un, pw], (error, row) => {
+        if (error) {
+            console.error("Database error: ", error);
+            res.redirect('/login');
+        } else if (row) {
+            console.log("User Logged in: ", un);
+            req.session.isLoggedIn = true;
+
+            res.redirect('/');
+        } else {
+            console.log('Bad user and/or bad password');
+            req.session.isLoggedIn = false;
+            res.redirect('/login');
+        }
+    })
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
