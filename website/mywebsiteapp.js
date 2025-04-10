@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const sqlite3 = require('sqlite3');
 const connectSqlite3 = require('connect-sqlite3');
-const e = require('express');
 
 const app = express();
 const PORT = 8080;
@@ -85,7 +84,8 @@ db.run("CREATE TABLE preferences (pref_id INTEGER PRIMARY KEY, pref_uid INTEGER,
 //-----------------
 app.get('/', (req, res) => {
     const model={
-        style: "mystyle.css"
+        style: "mystyle.css",
+        isLoggedIn: req.session.isLoggedIn
     }
     res.render('home.handlebars', model)
 });
@@ -94,6 +94,7 @@ app.get('/', (req, res) => {
 app.get('/fake-page', (req, res) => {
     const model = {
         style: "fakepage.css",
+        isLoggedIn: req.session.isLoggedIn
     };
     res.render('fake.handlebars', model);
 });
@@ -112,7 +113,8 @@ app.post('/go', (req, res) => {
 //--------------------
 app.get('/accessibility', (req, res) => {
     const model={
-        style: "accessibility.css"
+        style: "accessibility.css",
+        isLoggedIn: req.session.isLoggedIn
     }
     res.render('accessibility.handlebars', model)
 });
@@ -160,6 +162,16 @@ app.post('/login', (req, res) => {
     })
 });
 
+//--------------------
+// LOGOUT PAGE
+//--------------------
+app.get('/logout', (req, res) => {
+    req.session.destroy( (err) => {
+        console.log("Error while destroying the session: ", err)
+    })
+    console.log("Logged out...")
+    res.redirect('/')
+});
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
