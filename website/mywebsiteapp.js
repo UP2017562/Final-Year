@@ -1,6 +1,7 @@
 const express = require('express');
 const { engine } = require('express-handlebars');
 const bodyParser = require('body-parser');
+const handlebarsHelpers = require('handlebars-helpers')();
 
 const session = require('express-session');
 const sqlite3 = require('sqlite3');
@@ -57,14 +58,14 @@ db.run("CREATE TABLE users (user_id INTEGER PRIMARY KEY, username TEXT NOT NULL,
     }
 });
 
-db.run("CREATE TABLE preferences (pref_id INTEGER PRIMARY KEY, pref_uid INTEGER, font_style TEXT, font_size INTEGER, font_colour TEXT, images_to_text BOOLEAN, colour_contrast BOOLEAN, FOREIGN KEY (pref_uid) REFERENCES users (user_id))", (error) =>{
+db.run("CREATE TABLE preferences (pref_id INTEGER PRIMARY KEY, pref_uid INTEGER, font_style TEXT, font_size INTEGER, font_colour TEXT, images_to_text INTEGER, colour_contrast INTEGER, FOREIGN KEY (pref_uid) REFERENCES users (user_id))", (error) =>{
     if (error) {
         console.log("ERROR: ", error)
     } else {
         console.log("---> Tables preference created!")
 
         const preferences = [
-            { "id":"1", "uid":"1", "style":"arial sans", "size":"9", "colour":"White", "imtotxt":"True", "contrast":"False"},
+            { "id":"1", "uid":"1", "style":"arial-sans", "size":"9", "colour":"White", "imtotxt":1, "contrast":0 },
         ]
 
         preferences.forEach ( (onePreference) =>{
@@ -111,12 +112,34 @@ app.post('/go', (req, res) => {
 //--------------------
 // ACCESSIBILITY PAGE
 //--------------------
-app.get('/accessibility', (req, res) => {
-    const model={
-        style: "accessibility.css",
-        isLoggedIn: req.session.isLoggedIn
+app.get('/accessibility', function(req, res){
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login'); // Redirect to login if not logged in
     }
-    res.render('accessibility.handlebars', model)
+
+    const userId = req.session.userId; // Assuming userId is stored in the session upon login
+
+    db.get("SELECT * FROM preferences WHERE pref_uid = ?", [userId], function (error, userPreferences){
+        if (error) {
+            const model = {
+                style: "accessibility.css",
+                hasDatabaseError: true,
+                theError: error,
+                preferences: null,
+                isLoggedIn: req.session.isLoggedIn
+            };
+            res.render("accessibility.handlebars", model);
+        } else {
+            const model = {
+                style: "accessibility.css",
+                hasDatabaseError: false,
+                theError: "",
+                preferences: userPreferences,
+                isLoggedIn: req.session.isLoggedIn
+            };
+            res.render("accessibility.handlebars", model);
+        }
+    });
 });
 
 app.post('/save-accessibility', (req, res) => {
@@ -152,6 +175,7 @@ app.post('/login', (req, res) => {
         } else if (row) {
             console.log("User Logged in: ", un);
             req.session.isLoggedIn = true;
+            req.session.userId = row.user_id; // Store userId in session
 
             res.redirect('/');
         } else {
