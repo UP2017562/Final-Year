@@ -187,6 +187,39 @@ app.post('/login', (req, res) => {
 });
 
 //--------------------
+// REGISTER PAGE
+//--------------------
+app.get('/register', (req, res) => {
+    const model = {
+        style: "register.css",
+        isLoggedIn: req.session.isLoggedIn
+    };
+    res.render('register.handlebars', model);
+});
+
+app.post('/register', (req, res) => {
+    const { username, password } = req.body;
+
+    db.run("INSERT INTO users (username, password) VALUES (?, ?)", [username, password], function (error) {
+        if (error) {
+            console.error("Database error: ", error);
+            return res.redirect('/register');
+        }
+
+        const userId = this.lastID; // Get the ID of the newly inserted user
+
+        // Insert default preferences for the new user
+        db.run("INSERT INTO preferences (pref_uid, font_style, font_size, font_colour, images_to_text, colour_contrast) VALUES (?, ?, ?, ?, ?, ?)", 
+            [userId, "arial-sans", 8, "White", 0, 0], (error) => {
+                if (error) {
+                    console.error("Error inserting default preferences: ", error);
+                }
+                res.redirect('/login');
+            });
+    });
+});
+
+//--------------------
 // LOGOUT PAGE
 //--------------------
 app.get('/logout', (req, res) => {
