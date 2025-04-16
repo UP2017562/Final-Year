@@ -91,22 +91,42 @@ app.get('/', (req, res) => {
     res.render('home.handlebars', model)
 });
 
-// Fake page route
-app.get('/fake-page', (req, res) => {
-    const model = {
-        style: "fakepage.css",
-        isLoggedIn: req.session.isLoggedIn
-    };
-    res.render('fake.handlebars', model);
+app.post('/fake-page', (req, res) => {
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login'); // Redirect to login if not logged in
+    }
+
+    const userId = req.session.userId; // Get the logged-in user's ID
+
+    db.get("SELECT * FROM preferences WHERE pref_uid = ?", [userId], (error, userPreferences) => {
+        if (error || !userPreferences) {
+            console.error("Error fetching preferences or no preferences found: ", error);
+            return res.render('fake.handlebars', {
+                layout: false,
+                style: "fakepage.css",
+                isLoggedIn: req.session.isLoggedIn,
+                preferences: null, // Pass null if preferences are not found
+            });
+        }
+
+        // Pass preferences to the view
+        res.render('fake.handlebars', {
+            layout: false,
+            style: "fakepage.css",
+            isLoggedIn: req.session.isLoggedIn,
+            preferences: userPreferences, // Pass preferences to the view
+        });
+    });
 });
 
 // Process URL and render fake page
 app.post('/go', (req, res) => {
-    const model = {
-        style: "mystyle.css",
-        showFakePage: true, // Indicate that the fake page should load
-    };
-    res.render('home.handlebars', model);
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login'); // Redirect to login if not logged in
+    }
+
+    // Redirect to the fake page
+    res.redirect('/fake-page');
 });
 
 //--------------------
