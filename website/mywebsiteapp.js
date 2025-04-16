@@ -142,16 +142,32 @@ app.get('/accessibility', function(req, res){
     });
 });
 
-app.post('/save-accessibility', (req, res) => {
-    const { highContrast, fontSize, colorTheme, textSpacing, keyboardNavigation } = req.body;
 
-    // Process the settings (e.g., save to database or apply on page reload)
-    console.log('Accessibility Settings:', { highContrast, fontSize, colorTheme, textSpacing, keyboardNavigation });
+app.post('/save-accessibility/:prefId', (req, res) => {
+    const prefId = req.params.prefId; // Get the preference ID from the URL
+    const { font_style, font_size, font_colour, images_to_text, colour_contrast } = req.body;
 
-    // Redirect or render confirmation
-    res.redirect('/accessibility');
+    // Convert checkbox values to integers (SQLite uses 0/1 for boolean-like values)
+    const imagesToText = images_to_text ? 1 : 0;
+    const colourContrast = colour_contrast ? 1 : 0;
+
+    // Update the preferences in the database
+    db.run(
+        `UPDATE preferences 
+         SET font_style = ?, font_size = ?, font_colour = ?, images_to_text = ?, colour_contrast = ? 
+         WHERE pref_id = ?`,
+        [font_style, font_size, font_colour, imagesToText, colourContrast, prefId],
+        function (error) {
+            if (error) {
+                console.error("Error updating preferences: ", error);
+                return res.redirect('/accessibility'); // Redirect back to the page on error
+            }
+
+            console.log("Preferences updated successfully for pref_id:", prefId);
+            res.redirect('/accessibility'); // Redirect back to the accessibility page
+        }
+    );
 });
-
 
 //--------------------
 // LOGIN PAGE
