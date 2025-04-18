@@ -125,8 +125,27 @@ app.post('/go', (req, res) => {
         return res.redirect('/login'); // Redirect to login if not logged in
     }
 
-    // Redirect to the fake page
-    res.redirect('/fake-page');
+    const userId = req.session.userId; // Get the logged-in user's ID
+
+    db.get("SELECT * FROM preferences WHERE pref_uid = ?", [userId], (error, userPreferences) => {
+        if (error || !userPreferences) {
+            console.error("Error fetching preferences or no preferences found: ", error);
+            return res.render('home.handlebars', {
+                style: "mystyle.css",
+                isLoggedIn: req.session.isLoggedIn,
+                showFakePage: true,
+                preferences: null, // Pass null if preferences are not found
+            });
+        }
+
+        // Pass preferences to the home view
+        res.render('home.handlebars', {
+            style: "mystyle.css",
+            isLoggedIn: req.session.isLoggedIn,
+            showFakePage: true,
+            preferences: userPreferences, // Pass preferences to the view
+        });
+    });
 });
 
 //--------------------

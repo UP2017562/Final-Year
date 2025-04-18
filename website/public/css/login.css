@@ -55,6 +55,19 @@ input[type="text"], input[type="password"] {
 .login-button:hover {
     background-color: #0056b3;
 }
+
+.register-link {
+  display: inline-block; /* Ensures the margin works properly */
+  margin-top: 15px; /* Adjust the value as needed */
+  font-size: 14px; /* Optional: Adjust font size */
+  color: #007BFF; /* Optional: Match the button color */
+  text-decoration: none; /* Optional: Remove underline */
+}
+
+.register-link:hover {
+  text-decoration: underline; /* Optional: Add underline on hover */
+}
+
 /* --------------------------- */
 /* THIS IS FOR MENU NAVIGATION */
 /* --------------------------- */

@@ -3,14 +3,36 @@
         <h1>Welcome to Dynamic Accessibility</h1>
         <p>This box covers the webpage and can be customized!</p>
     </div>
-    <form action="/fake-page" method="post" class="url-input">
+    <form action="/go" method="post" class="url-input">
         <label for="url">Insert your URL here:</label>
         <input type="text" id="url" name="url" placeholder="Enter URL...">
         <button type="submit" class="go-button">Go!</button>
     </form>
+
     {{#if showFakePage}}
-    <div class="iframe-container">
-        <iframe src="/fake-page" width="100%" height="100%" style="border: none; border-radius: 8px;"></iframe>
+    <div class="fake-page-container">
+        {{#if preferences}}
+        <style>
+            .fake-page-container {
+                font-family: {{preferences.font_style}}, sans-serif;
+                font-size: {{preferences.font_size}}px;
+                color: {{preferences.font_colour}};
+                {{#if preferences.colour_contrast}}background-color: black;{{/if}}
+            }
+
+            {{#if preferences.images_to_text}}
+            .fake-page-container img {
+                display: none; /* Hide images if images-to-text is enabled */
+            }
+            {{/if}}
+        </style>
+        {{/if}}
+
+        <div class="fake-page-content">
+            <h1>Welcome to the Fake Page</h1>
+            <p>This page dynamically applies your accessibility preferences.</p>
+            <img src="/img/beaver.png" alt="Beaver Image">
+        </div>
     </div>
     {{/if}}
 </section>

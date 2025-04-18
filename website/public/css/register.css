@@ -56,7 +56,17 @@ body {
     background-color: #0056b3;
   }
 
- 
+ .login-link {
+    display: inline-block; /* Ensures the margin works properly */
+    margin-top: 20px;
+    font-size: 14px;
+    color: #007BFF;
+    text-decoration: none;
+  }
+  
+  .login-link:hover {
+    text-decoration: underline;
+  }
 
 /* --------------------------- */
 /* THIS IS FOR MENU NAVIGATION */
