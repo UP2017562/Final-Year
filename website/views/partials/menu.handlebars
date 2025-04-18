@@ -5,7 +5,11 @@
             <ul class="tabs">
                 <li><a href="/"> Home </a></li>
                 <li><a href="/accessibility"> Accessibility </a></li>
-                <li><a href="/login"> Login </a></li>
+                {{#if isLoggedIn}}
+                    <li><a href="/logout"> Logout </a></li>
+                {{else}}    
+                    <li><a href="/login"> Login </a></li>
+                {{/if}}
             </ul>
         </div>
     </nav>
