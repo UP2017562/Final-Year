@@ -27,6 +27,13 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow */
 }
 
+.big-box h1, p {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+
+
 .iframe-container {
     width: 80%; /* Covers a large portion of the webpage */
     height: 300px; /* Adjust height as needed */
@@ -95,7 +102,7 @@ padding: 0.5rem 1rem;
 }
 
 .navbar .title {
-font-size: 18px;
+font-size: 30px;
 font-weight: bold;
 }
 
@@ -113,7 +120,7 @@ margin-left: 20px;
 .navbar .tabs a {
 color: white;
 text-decoration: none;
-font-size: 16px;
+font-size: 30px;
 }
 
 .navbar .tabs a:hover {
