@@ -65,7 +65,7 @@ db.run("CREATE TABLE preferences (pref_id INTEGER PRIMARY KEY, pref_uid INTEGER,
         console.log("---> Tables preference created!")
 
         const preferences = [
-            { "id":"1", "uid":"1", "style":"arial-sans", "size":"9", "colour":"White", "imtotxt":1, "contrast":0 },
+            { "id":"1", "uid":"1", "style":"arial-sans", "size":"30", "colour":"black", "imtotxt":0, "contrast":0 },
         ]
 
         preferences.forEach ( (onePreference) =>{
@@ -265,7 +265,7 @@ app.post('/register', (req, res) => {
 
         // Insert default preferences for the new user
         db.run("INSERT INTO preferences (pref_uid, font_style, font_size, font_colour, images_to_text, colour_contrast) VALUES (?, ?, ?, ?, ?, ?)", 
-            [userId, "arial-sans", 8, "White", 0, 0], (error) => {
+            [userId, "arial-sans", 30, "Black", 0, 0], (error) => {
                 if (error) {
                     console.error("Error inserting default preferences: ", error);
                 }

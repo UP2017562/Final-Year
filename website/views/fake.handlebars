@@ -15,9 +15,22 @@
             {{#if preferences.colour_contrast}}background-color: black;{{/if}}
         }
 
+        /* CSS logic for image and paragraph */
         {{#if preferences.images_to_text}}
         img {
-            display: none; /* Hide images if images-to-text is enabled */
+            display: none; /* Hide the image */
+        }
+        p.alt-text {
+            display: block; /* Show the paragraph */
+            font-size: 14px;
+            color: red; /* Style the alt text */
+        }
+        {{else}}
+        img {
+            display: block; /* Show the image */
+        }
+        p.alt-text {
+            display: none; /* Hide the paragraph */
         }
         {{/if}}
     </style>
@@ -25,9 +38,15 @@
 </head>
 <body>
     <h1>Welcome to the Fake Page</h1>
-    <p>This page dynamically applies your accessibility preferences.</p>
-    <img src="/img/beaver.png" alt="beaver Image">
+    <p>This page dynamically applies your accessibilitydsa dasd  preferences.</p>
+    <p>Here is an image of a beaver:</p>
 
 
+
+    <!-- Image and associated paragraph -->
+    <img id="beaver-image" src="/img/beaver.png" alt="beaver Image">
+    <p id="beaver-alt-text" class="alt-text">beaver Image</p>
+    
 </body>
 </html>
+
