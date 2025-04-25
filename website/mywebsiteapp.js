@@ -104,10 +104,7 @@ app.post('/go', async (req, res) => {
         const html = await response.text();
 
         // Send the HTML source back to the client
-        res.send(`
-            <h1>Source Code for URL: ${url}</h1>
-            <textarea style="width: 100%; height: 400px;">${html}</textarea>
-        `);
+        res.send(html);
     } catch (error) {
         console.error('Error fetching URL:', error);
         res.status(500).send('Failed to fetch the URL. Please check if the URL is valid.');
