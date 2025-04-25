@@ -2,6 +2,7 @@ const express = require('express');
 const { engine } = require('express-handlebars');
 const bodyParser = require('body-parser');
 const handlebarsHelpers = require('handlebars-helpers')();
+const fetch = require('node-fetch');
 
 const session = require('express-session');
 const sqlite3 = require('sqlite3');
@@ -91,15 +92,26 @@ app.get('/', (req, res) => {
     res.render('home-2.handlebars', model)
 });
 
-// Route to handle form submission and log the URL
-app.post('/go', (req, res) => {
+// Route to handle form submission and fetch the source code
+app.post('/go', async (req, res) => {
     const url = req.body.url; // Extract the URL from the form submission
 
-    // Log the URL to verify it's received
-    console.log('Received URL:', url);
+    console.log('Received URL:', url); // Log the URL for debugging
 
-    // Send a response back to the client for confirmation
-    res.send(`URL received: ${url}`);
+    try {
+        // Fetch the source code of the provided URL
+        const response = await fetch(url);
+        const html = await response.text();
+
+        // Send the HTML source back to the client
+        res.send(`
+            <h1>Source Code for URL: ${url}</h1>
+            <textarea style="width: 100%; height: 400px;">${html}</textarea>
+        `);
+    } catch (error) {
+        console.error('Error fetching URL:', error);
+        res.status(500).send('Failed to fetch the URL. Please check if the URL is valid.');
+    }
 });
 
 

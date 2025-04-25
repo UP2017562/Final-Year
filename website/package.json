@@ -17,6 +17,7 @@
     "express-session": "^1.18.1",
     "handlebars-helpers": "^0.10.0",
     "hbs": "^4.2.0",
+    "node-fetch": "^2.7.0",
     "sqlite3": "^5.1.7"
   }
 }
