@@ -13,12 +13,11 @@
 </section>
 
 <script>
-    // Listen for form submission
     document.querySelector('.url-input').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form from reloading the page
-        const url = document.querySelector('#url').value; // Get URL input value
+        event.preventDefault(); // Prevent form submission
+        const url = document.querySelector('#url').value; // Get URL from the form
 
-        // Send POST request to the server
+        // Fetch the source code from the server
         fetch('/go', {
             method: 'POST',
             headers: {
@@ -26,17 +25,33 @@
             },
             body: JSON.stringify({ url }) // Send the URL to the server
         })
-        .then(response => response.text()) // Get the response as plain text
+        .then(response => response.text()) // Get the source code as plain text
         .then(data => {
-            // Inject the source code into the iframe
             const iframe = document.getElementById('source-preview');
             const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+            // Write the source code into the iframe
             iframeDoc.open();
-            iframeDoc.write(data); // Write the fetched HTML into the iframe
+            iframeDoc.write(data);
+
+            // Inject custom styles for accessibility
+            const style = iframeDoc.createElement('style');
+            style.textContent = `
+                body {
+                    font-family: Arial, sans-serif; /* Set default font */
+                    font-size: 16px; /* Adjust font size */
+                    color: #ffffff; /* Text color */
+                    background-color: #000000; /* Background color for high contrast */
+                }
+                a {
+                    color: #1e90ff; /* Accessible link color */
+                }
+            `;
+            iframeDoc.head.appendChild(style); // Add the style block to the iframe
+
             iframeDoc.close();
         })
-        .catch(error => {
-            console.error('Error loading source into iframe:', error);
-        });
+        .catch(error => console.error('Error loading source into iframe:', error));
     });
 </script>
+
