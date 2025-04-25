@@ -88,7 +88,7 @@ app.get('/', (req, res) => {
         style: "mystyle.css",
         isLoggedIn: req.session.isLoggedIn
     }
-    res.render('home.handlebars', model)
+    res.render('home-2.handlebars', model)
 });
 
 app.post('/fake-page', (req, res) => {
@@ -118,6 +118,8 @@ app.post('/fake-page', (req, res) => {
         });
     });
 });
+
+
 
 // Process URL and render fake page
 app.post('/go', (req, res) => {
