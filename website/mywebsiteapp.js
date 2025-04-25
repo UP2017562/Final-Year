@@ -95,6 +95,7 @@ app.get('/', (req, res) => {
 // Route to handle form submission and fetch the source code
 app.post('/go', async (req, res) => {
     const url = req.body.url; // Extract the URL from the form submission
+    const userId = req.session.userId; // Get the logged-in user's ID
 
     console.log('Received URL:', url); // Log the URL for debugging
 
@@ -103,8 +104,16 @@ app.post('/go', async (req, res) => {
         const response = await fetch(url);
         const html = await response.text();
 
-        // Send the HTML source back to the client
-        res.send(html);
+        // Fetch user preferences from the database
+        db.get("SELECT * FROM preferences WHERE pref_uid = ?", [userId], (error, userPreferences) => {
+            if (error || !userPreferences) {
+                console.error("Error fetching preferences or no preferences found: ", error);
+                return res.status(500).send('Failed to fetch user preferences.');
+            }
+
+            // Send the HTML source and preferences back to the client
+            res.json({ html, preferences: userPreferences });
+        });
     } catch (error) {
         console.error('Error fetching URL:', error);
         res.status(500).send('Failed to fetch the URL. Please check if the URL is valid.');

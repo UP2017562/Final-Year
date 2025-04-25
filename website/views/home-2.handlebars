@@ -17,7 +17,7 @@
         event.preventDefault(); // Prevent form submission
         const url = document.querySelector('#url').value; // Get URL from the form
 
-        // Fetch the source code from the server
+        // Fetch the source code and user preferences from the server
         fetch('/go', {
             method: 'POST',
             headers: {
@@ -25,29 +25,30 @@
             },
             body: JSON.stringify({ url }) // Send the URL to the server
         })
-        .then(response => response.text()) // Get the source code as plain text
+        .then(response => response.json()) // Get the response as JSON
         .then(data => {
             const iframe = document.getElementById('source-preview');
             const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
             // Write the source code into the iframe
             iframeDoc.open();
-            iframeDoc.write(data);
+            iframeDoc.write(data.html);
 
-            // Inject custom styles for accessibility
+            // Apply user preferences as CSS
             const style = iframeDoc.createElement('style');
+            const preferences = data.preferences;
             style.textContent = `
                 body {
-                    font-family: Arial, sans-serif; /* Set default font */
-                    font-size: 16px; /* Adjust font size */
-                    color: #ffffff; /* Text color */
-                    background-color: #000000; /* Background color for high contrast */
+                    font-family: ${preferences.font_style || 'Arial, sans-serif'};
+                    font-size: ${preferences.font_size || 16}px;
+                    color: ${preferences.font_colour || '#000000'};
+                    background-color: ${preferences.colour_contrast ? '#000000' : '#ffffff'};
                 }
                 a {
-                    color: #1e90ff; /* Accessible link color */
+                    color: ${preferences.colour_contrast ? '#1e90ff' : '#0000ff'};
                 }
             `;
-            iframeDoc.head.appendChild(style); // Add the style block to the iframe
+            iframeDoc.head.appendChild(style);
 
             iframeDoc.close();
         })
