@@ -91,6 +91,18 @@ app.get('/', (req, res) => {
     res.render('home-2.handlebars', model)
 });
 
+// Route to handle form submission and log the URL
+app.post('/go', (req, res) => {
+    const url = req.body.url; // Extract the URL from the form submission
+
+    // Log the URL to verify it's received
+    console.log('Received URL:', url);
+
+    // Send a response back to the client for confirmation
+    res.send(`URL received: ${url}`);
+});
+
+
 app.post('/fake-page', (req, res) => {
     if (!req.session.isLoggedIn) {
         return res.redirect('/login'); // Redirect to login if not logged in
@@ -121,34 +133,34 @@ app.post('/fake-page', (req, res) => {
 
 
 
-// Process URL and render fake page
-app.post('/go', (req, res) => {
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login'); // Redirect to login if not logged in
-    }
+// // Process URL and render fake page
+// app.post('/go', (req, res) => {
+//     if (!req.session.isLoggedIn) {
+//         return res.redirect('/login'); // Redirect to login if not logged in
+//     }
 
-    const userId = req.session.userId; // Get the logged-in user's ID
+//     const userId = req.session.userId; // Get the logged-in user's ID
 
-    db.get("SELECT * FROM preferences WHERE pref_uid = ?", [userId], (error, userPreferences) => {
-        if (error || !userPreferences) {
-            console.error("Error fetching preferences or no preferences found: ", error);
-            return res.render('home.handlebars', {
-                style: "mystyle.css",
-                isLoggedIn: req.session.isLoggedIn,
-                showFakePage: true,
-                preferences: null, // Pass null if preferences are not found
-            });
-        }
+//     db.get("SELECT * FROM preferences WHERE pref_uid = ?", [userId], (error, userPreferences) => {
+//         if (error || !userPreferences) {
+//             console.error("Error fetching preferences or no preferences found: ", error);
+//             return res.render('home.handlebars', {
+//                 style: "mystyle.css",
+//                 isLoggedIn: req.session.isLoggedIn,
+//                 showFakePage: true,
+//                 preferences: null, // Pass null if preferences are not found
+//             });
+//         }
 
-        // Pass preferences to the home view
-        res.render('home.handlebars', {
-            style: "mystyle.css",
-            isLoggedIn: req.session.isLoggedIn,
-            showFakePage: true,
-            preferences: userPreferences, // Pass preferences to the view
-        });
-    });
-});
+//         // Pass preferences to the home view
+//         res.render('home.handlebars', {
+//             style: "mystyle.css",
+//             isLoggedIn: req.session.isLoggedIn,
+//             showFakePage: true,
+//             preferences: userPreferences, // Pass preferences to the view
+//         });
+//     });
+// });
 
 //--------------------
 // ACCESSIBILITY PAGE
