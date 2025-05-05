@@ -1,8 +1,9 @@
 <section class="home-container">
     <div class="big-box">
-        <h1>Welcome to testing</h1>
-        <p>This box covers the webpage and can be customized!</p>
+        <h1>Welcome to Dynamic accessibility, Customize Web Pages!</h1>
+        <p>This website allows you to enter a url and change that website to your needs! Simply login or create an account and enter the prefrences you want!</p>
     </div>
+    {{#if isLoggedIn}}
     <form action="/go" method="post" class="url-input">
         <label for="url">Insert your URL here:</label>
         <input type="text" id="url" name="url" placeholder="Enter URL...">
@@ -10,6 +11,9 @@
     </form>
     <!-- Add iframe for displaying the fetched source code -->
     <iframe id="source-preview" width="80%" height="600" style="border: 1px solid #ccc;"></iframe>
+    {{else}}
+    <p>Please <a href="/login">log in</a> to use this feature.</p>
+    {{/if}}
 </section>
 
 <script>
@@ -46,8 +50,7 @@
                 }
                 a {
                     color: ${preferences.colour_contrast ? '#1e90ff' : '#0000ff'};
-                }
-            `;
+                }`;
             iframeDoc.head.appendChild(style);
 
             iframeDoc.close();
