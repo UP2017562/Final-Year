@@ -50,6 +50,10 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow */
 }
 
+#source-preview {
+    margin-top: 40px; /* Add space between the form and the iframe */
+}
+
 .url-input {
     margin-top: 20px;
     text-align: center;
@@ -83,6 +87,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
 
 .go-button:hover {
     background-color: #0056b3;

@@ -2,6 +2,7 @@ const express = require('express');
 const { engine } = require('express-handlebars');
 const bodyParser = require('body-parser');
 const handlebarsHelpers = require('handlebars-helpers')();
+const fetch = require('node-fetch');
 
 const session = require('express-session');
 const sqlite3 = require('sqlite3');
@@ -88,64 +89,43 @@ app.get('/', (req, res) => {
         style: "mystyle.css",
         isLoggedIn: req.session.isLoggedIn
     }
-    res.render('home.handlebars', model)
+    res.render('index.handlebars', model)
 });
 
-app.post('/fake-page', (req, res) => {
+// Middleware to check if the user is logged in
+function requireLogin(req, res, next) {
     if (!req.session.isLoggedIn) {
-        return res.redirect('/login'); // Redirect to login if not logged in
+        return res.status(401).send('Unauthorized: Please log in to access this feature.');
     }
+    next();
+}
 
+// Route to handle form submission and fetch the source code
+app.post('/go', requireLogin, async (req, res) => {
+    const url = req.body.url; // Extract the URL from the form submission
     const userId = req.session.userId; // Get the logged-in user's ID
 
-    db.get("SELECT * FROM preferences WHERE pref_uid = ?", [userId], (error, userPreferences) => {
-        if (error || !userPreferences) {
-            console.error("Error fetching preferences or no preferences found: ", error);
-            return res.render('fake.handlebars', {
-                layout: false,
-                style: "fakepage.css",
-                isLoggedIn: req.session.isLoggedIn,
-                preferences: null, // Pass null if preferences are not found
-            });
-        }
+    console.log('Received URL:', url); // Log the URL for debugging
 
-        // Pass preferences to the view
-        res.render('fake.handlebars', {
-            layout: false,
-            style: "fakepage.css",
-            isLoggedIn: req.session.isLoggedIn,
-            preferences: userPreferences, // Pass preferences to the view
+    try {
+        // Fetch the source code of the provided URL
+        const response = await fetch(url);
+        const html = await response.text();
+
+        // Fetch user preferences from the database
+        db.get("SELECT * FROM preferences WHERE pref_uid = ?", [userId], (error, userPreferences) => {
+            if (error || !userPreferences) {
+                console.error("Error fetching preferences or no preferences found: ", error);
+                return res.status(500).send('Failed to fetch user preferences.');
+            }
+
+            // Send the HTML source and preferences back to the client
+            res.json({ html, preferences: userPreferences });
         });
-    });
-});
-
-// Process URL and render fake page
-app.post('/go', (req, res) => {
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login'); // Redirect to login if not logged in
+    } catch (error) {
+        console.error('Error fetching URL:', error);
+        res.status(500).send('Failed to fetch the URL. Please check if the URL is valid.');
     }
-
-    const userId = req.session.userId; // Get the logged-in user's ID
-
-    db.get("SELECT * FROM preferences WHERE pref_uid = ?", [userId], (error, userPreferences) => {
-        if (error || !userPreferences) {
-            console.error("Error fetching preferences or no preferences found: ", error);
-            return res.render('home.handlebars', {
-                style: "mystyle.css",
-                isLoggedIn: req.session.isLoggedIn,
-                showFakePage: true,
-                preferences: null, // Pass null if preferences are not found
-            });
-        }
-
-        // Pass preferences to the home view
-        res.render('home.handlebars', {
-            style: "mystyle.css",
-            isLoggedIn: req.session.isLoggedIn,
-            showFakePage: true,
-            preferences: userPreferences, // Pass preferences to the view
-        });
-    });
 });
 
 //--------------------
