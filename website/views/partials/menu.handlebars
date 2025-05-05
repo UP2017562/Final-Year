@@ -1,13 +1,23 @@
 <header>
     <nav>
         <div class="navbar">
+            {{! The navigation bar container }}
             <label class="title">Dynamic accessibility, customize for web pages</label>
+            {{! Displays the title of the website }}
+
             <ul class="tabs">
+                {{! The list of navigation links }}
                 <li><a href="/"> Home </a></li>
+                {{! Link to the home page }}
+
                 <li><a href="/accessibility"> Accessibility </a></li>
+                {{! Link to the accessibility page }}
+
                 {{#if isLoggedIn}}
+                    {{! Conditional rendering: if the user is logged in, show the logout link }}
                     <li><a href="/logout"> Logout </a></li>
                 {{else}}    
+                    {{! If the user is not logged in, show the login link }}
                     <li><a href="/login"> Login </a></li>
                 {{/if}}
             </ul>

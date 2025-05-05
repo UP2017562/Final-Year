@@ -1,58 +1,70 @@
 <section class="accessibility-container">
+    <!-- Main heading for the accessibility settings page -->
     <h1>Accessibility Settings</h1>
+
+    <!-- Check if the user is logged in -->
     {{#if isLoggedIn}}
-    {{#if preferences}}
-    <form action="/save-accessibility/{{preferences.pref_id}}" method="post" class="accessibility-form">
-        <!-- Font Style -->
-        <div class="form-group">
-            <label for="font_style">Font Style:</label>
-            <select id="font_style" name="font_style">
-                <option value="arial-sans" {{#if (eq preferences.font_style "arial-sans")}}selected{{/if}}>Arial Sans</option>
-                <option value="serif" {{#if (eq preferences.font_style "serif")}}selected{{/if}}>Serif</option>
-                <option value="sans-serif" {{#if (eq preferences.font_style "sans-serif")}}selected{{/if}}>Sans-Serif</option>
-                <option value="monospace" {{#if (eq preferences.font_style "monospace")}}selected{{/if}}>Monospace</option>
-                <option value="dyslexia-friendly" {{#if (eq preferences.font_style "dyslexia-friendly")}}selected{{/if}}>Dyslexia-Friendly</option>
-            </select>
-        </div>
+        <!-- Check if the user has existing preferences -->
+        {{#if preferences}}
+            <!-- Form to update accessibility preferences -->
+            <form action="/save-accessibility/{{preferences.pref_id}}" method="post" class="accessibility-form">
+                <!-- Font Style Selection -->
+                <div class="form-group">
+                    <label for="font_style">Font Style:</label>
+                    <select id="font_style" name="font_style">
+                        <!-- Options for font styles, pre-selecting the current preference -->
+                        <option value="arial-sans" {{#if (eq preferences.font_style "arial-sans")}}selected{{/if}}>Arial Sans</option>
+                        <option value="serif" {{#if (eq preferences.font_style "serif")}}selected{{/if}}>Serif</option>
+                        <option value="sans-serif" {{#if (eq preferences.font_style "sans-serif")}}selected{{/if}}>Sans-Serif</option>
+                        <option value="monospace" {{#if (eq preferences.font_style "monospace")}}selected{{/if}}>Monospace</option>
+                        <option value="dyslexia-friendly" {{#if (eq preferences.font_style "dyslexia-friendly")}}selected{{/if}}>Dyslexia-Friendly</option>
+                    </select>
+                </div>
 
-        <!-- Font Size -->
-        <div class="form-group">
-            <label for="font_size">Font Size:</label>
-            <input type="number" id="font_size" name="font_size" min="8" max="48" value="{{preferences.font_size}}" required>
-        </div>
+                <!-- Font Size Input -->
+                <div class="form-group">
+                    <label for="font_size">Font Size:</label>
+                    <!-- Input for font size with a range of 8 to 48 -->
+                    <input type="number" id="font_size" name="font_size" min="8" max="48" value="{{preferences.font_size}}" required>
+                </div>
 
-        <!-- Font Colour -->
-        <div class="form-group">
-            <label for="font_colour">Font Colour:</label>
-            <input type="text" id="font_colour" name="font_colour" value="{{preferences.font_colour}}" required>
-        </div>
+                <!-- Font Colour Input -->
+                <div class="form-group">
+                    <label for="font_colour">Font Colour:</label>
+                    <!-- Input for font colour -->
+                    <input type="text" id="font_colour" name="font_colour" value="{{preferences.font_colour}}" required>
+                </div>
 
-        <!-- Images-to-Text -->
-        <div class="form-group">
-            <label for="images_to_text">
-                <input type="checkbox" id="images_to_text" name="images_to_text" {{#if preferences.images_to_text}}checked{{/if}}>
-                Enable Images-to-Text Conversion
-            </label>
-        </div>
+                <!-- Images-to-Text Conversion Toggle -->
+                <div class="form-group">
+                    <label for="images_to_text">
+                        <!-- Checkbox to enable or disable images-to-text conversion -->
+                        <input type="checkbox" id="images_to_text" name="images_to_text" {{#if preferences.images_to_text}}checked{{/if}}>
+                        Enable Images-to-Text Conversion
+                    </label>
+                </div>
 
-        <!-- High Colour Contrast -->
-        <div class="form-group">
-            <label for="colour_contrast">
-                <input type="checkbox" id="colour_contrast" name="colour_contrast" {{#if preferences.colour_contrast}}checked{{/if}}>
-                Enable High Colour Contrast
-            </label>
-        </div>
+                <!-- High Colour Contrast Toggle -->
+                <div class="form-group">
+                    <label for="colour_contrast">
+                        <!-- Checkbox to enable or disable high colour contrast -->
+                        <input type="checkbox" id="colour_contrast" name="colour_contrast" {{#if preferences.colour_contrast}}checked{{/if}}>
+                        Enable High Colour Contrast
+                    </label>
+                </div>
 
-        <!-- Save Button -->
-        <button type="submit" class="save-button">Save Preferences</button>
-    </form>
+                <!-- Save Button -->
+                <button type="submit" class="save-button">Save Preferences</button>
+            </form>
+        {{else}}
+            <!-- Message displayed if no preferences are found -->
+            <p>No preferences found for your account. Please configure your settings.</p>
+        {{/if}}
     {{else}}
-    <p>No preferences found for your account. Please configure your settings.</p>
-    {{/if}}
-    {{else}}
-    <p>Sorry, you must be logged in to have accessibility<br/>
-    please go to the <a href="/login">Login</a> page.
-    </p>
+        <!-- Message displayed if the user is not logged in -->
+        <p>Sorry, you must be logged in to have accessibility<br/>
+        please go to the <a href="/login">Login</a> page.
+        </p>
     {{/if}}
 </section>
 

@@ -1,15 +1,26 @@
+{{! The main container for the login page }}
 <section class="login-container">
+    {{! The title of the login page }}
     <h1>Login</h1>
+    
+    {{! The login form that sends a POST request to the /login endpoint }}
     <form action="/login" method="post" class="login-form">
+        {{! Input field for the username }}
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="un" name="un" required>
         </div>
+        
+        {{! Input field for the password }}
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="pw" name="pw" required>
         </div>
+        
+        {{! Submit button for the login form }}
         <button type="submit" class="login-button">Login</button>
     </form>
+    
+    {{! Link to the registration page for users who don't have an account }}
     <a href="/register" class="register-link">Register</a>
 </section>

@@ -1,15 +1,26 @@
+{{! The main container for the registration page }}
 <section class="register-container">
+    {{! The title of the registration page }}
     <h1>Register</h1>
+    
+    {{! The registration form that sends a POST request to the /register endpoint }}
     <form action="/register" method="post" class="register-form">
+        {{! Input field for the username }}
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
         </div>
+        
+        {{! Input field for the password }}
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
         </div>
+        
+        {{! Submit button for the registration form }}
         <button type="submit" class="register-button">Register</button>
     </form>
+    
+    {{! Link to navigate back to the login page }}
     <a href="/login" class="login-link">Back to Login</a>
 </section>

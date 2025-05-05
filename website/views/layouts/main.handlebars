@@ -1,13 +1,24 @@
+{{! The main layout template for the website }}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        {{! Sets the character encoding for the document to UTF-8 }}
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {{! Ensures the page is responsive and scales properly on different devices }}
+
         <title>Dynamic accessibility, customize for web pages</title>
+        {{! The title of the web page, displayed in the browser tab }}
+
         <link rel="stylesheet" href="/css/{{style}}">
+        {{! Dynamically includes a CSS stylesheet based on the 'style' variable }}
     </head>
     <body>
         {{> menu}}
+        {{! Includes the 'menu' partial template, typically for navigation }}
+
         {{{body}}}
+        {{! Inserts the main content of the page, passed from other templates }}
     </body>
 </html>

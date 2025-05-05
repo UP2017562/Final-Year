@@ -1,61 +1,65 @@
 <section class="home-container">
     <div class="big-box">
+        <!-- Header section with a welcome message -->
         <h1>Welcome to Dynamic accessibility, Customize Web Pages!</h1>
         <p>This website allows you to enter a url and change that website to your needs! Simply login or create an account and enter the prefrences you want!</p>
     </div>
     {{#if isLoggedIn}}
+    <!-- Form for logged-in users to input a URL -->
     <form action="/go" method="post" class="url-input">
         <label for="url">Insert your URL here:</label>
         <input type="text" id="url" name="url" placeholder="Enter URL...">
         <button type="submit" class="go-button">Go!</button>
     </form>
-    <!-- Add iframe for displaying the fetched source code -->
+    <!-- Iframe to display the fetched source code -->
     <iframe id="source-preview" width="80%" height="600" style="border: 1px solid #ccc;"></iframe>
     {{else}}
+    <!-- Message prompting users to log in if not authenticated -->
     <p>Please <a href="/login">log in</a> to use this feature.</p>
     {{/if}}
 </section>
 
 <script>
+    // Add an event listener to the form to handle URL submission
     document.querySelector('.url-input').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form submission
-        const url = document.querySelector('#url').value; // Get URL from the form
+        event.preventDefault(); // Prevent the default form submission behavior
+        const url = document.querySelector('#url').value; // Get the URL entered by the user
 
-        // Fetch the source code and user preferences from the server
+        // Send a POST request to the server with the URL
         fetch('/go', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json', // Specify JSON content type
             },
-            body: JSON.stringify({ url }) // Send the URL to the server
+            body: JSON.stringify({ url }) // Send the URL as JSON in the request body
         })
-        .then(response => response.json()) // Get the response as JSON
+        .then(response => response.json()) // Parse the server response as JSON
         .then(data => {
-            const iframe = document.getElementById('source-preview');
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const iframe = document.getElementById('source-preview'); // Get the iframe element
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document; // Access the iframe's document
 
-            // Write the source code into the iframe
+            // Write the fetched source code into the iframe
             iframeDoc.open();
             iframeDoc.write(data.html);
 
-            // Apply user preferences as CSS
+            // Create a style element to apply user preferences
             const style = iframeDoc.createElement('style');
-            const preferences = data.preferences;
+            const preferences = data.preferences; // Extract user preferences from the response
             style.textContent = `
                 body {
-                    font-family: ${preferences.font_style || 'Arial, sans-serif'};
-                    font-size: ${preferences.font_size || 16}px;
-                    color: ${preferences.font_colour || '#000000'};
-                    background-color: ${preferences.colour_contrast ? '#000000' : '#ffffff'};
+                    font-family: ${preferences.font_style || 'Arial, sans-serif'}; 
+                    font-size: ${preferences.font_size || 16}px; 
+                    color: ${preferences.font_colour || '#000000'}; 
+                    background-color: ${preferences.colour_contrast ? '#000000' : '#ffffff'}; 
                 }
                 a {
-                    color: ${preferences.colour_contrast ? '#1e90ff' : '#0000ff'};
+                    color: ${preferences.colour_contrast ? '#1e90ff' : '#0000ff'}; 
                 }`;
-            iframeDoc.head.appendChild(style);
+            iframeDoc.head.appendChild(style); // Append the style element to the iframe's head
 
-            iframeDoc.close();
+            iframeDoc.close(); // Close the iframe document
         })
-        .catch(error => console.error('Error loading source into iframe:', error));
+        .catch(error => console.error('Error loading source into iframe:', error)); // Log any errors
     });
 </script>
 
