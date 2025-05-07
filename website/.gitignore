@@ -1,3 +1,5 @@
 node_modules/
 session-db.db
 users-up2017562.db
+package-lock.json
+package.json
